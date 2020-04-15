@@ -252,7 +252,7 @@ class PayCallBase(object) :
         #         bal=float(self.order_obj.confirm_amount) - float(self.order_obj.tech_cost), up_bal=self.amount,
         #         memo="扫码", ordercode=self.order_obj.ordercode)
 
-        AccountPay(userid=self.order_obj.userid,ordercode=self.order_obj.ordercode,amount=float(self.order_obj.confirm_amount) - float(self.order_obj.tech_cost)).run()
+        AccountPay(paypassid=self.order_obj.paypass,userid=self.order_obj.userid,ordercode=self.order_obj.ordercode,amount=float(self.order_obj.confirm_amount) - float(self.order_obj.tech_cost)).run()
 
     def get_agent_free(self):
         """
@@ -270,7 +270,7 @@ class PayCallBase(object) :
                     # upd_bal(userid=item.userid_to, bal=amount, up_bal=self.amount, memo="扫码",
                     #         ordercode=self.order_obj.ordercode)
 
-                    AccountPay(userid=item.userid_to, ordercode=self.order_obj.ordercode,
+                    AccountPay(paypassid=self.order_obj.paypass, userid=item.userid_to, ordercode=self.order_obj.ordercode,
                                    amount=amount).run()
 
             # self.stand_rate = rate
