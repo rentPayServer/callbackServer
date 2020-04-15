@@ -25,6 +25,7 @@ from libs.utils.mytime import UtilTime
 
 from apps.pay.utils import QrCodeWechat,QrCodeFlm
 from apps.account import AccountPay
+from decimal import *
 from apps.pay.models import PayPass
 from requests import request
 
@@ -325,7 +326,13 @@ class PayCallBase(object) :
         """
         self.order_obj.myfee = float(self.order_obj.tech_cost) - float(self.order_obj.codefee) - float(self.order_obj.agentfee)
 
-        print(self.order_obj.myfee,self.order_obj.tech_cost,self.order_obj.codefee,self.order_obj.agentfee)
+        # print(self.order_obj.myfee,self.order_obj.tech_cost,self.order_obj.codefee,self.order_obj.agentfee)
+
+        logger.info("订单号{}交易金额{}收入{}".format(self.order_obj.ordercode,self.order_obj.confirm_amount,self.order_obj.myfee))
+        user = Users.objects.select_for_update().get(userid=1)
+        user.bal +=self.order_obj.myfee
+        user.save()
+
         # if self.order_obj.userid not in [3,20,5]:
         #     upd_bal(userid=1, bal=self.order_obj.myfee,up_bal=self.amount, memo="扫码", ordercode=self.order_obj.ordercode,upd_business_agent_tot=True)
 

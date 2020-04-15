@@ -715,22 +715,24 @@ class LastPassAPIView(GenericViewSetCustom):
     @ShouGong_Core_connector()
     def shougonghandler_callback(self, request, *args, **kwargs):
 
-        print("手工回调")
-        data={}
-        for item in request.data:
-            data[item] = request.data[item]
-        ShouGongHandler(data=data).call_run()
+        with transaction.atomic():
+            print("手工回调")
+            data={}
+            for item in request.data:
+                data[item] = request.data[item]
+            ShouGongHandler(data=data).call_run()
         return None
 
     @list_route(methods=['POST'])
     @ShouGong_Core_connector()
     def shougonghandler1_callback(self, request, *args, **kwargs):
 
-        print("手工回调")
-        data={}
-        for item in request.data:
-            data[item] = request.data[item]
-        ShouGongHandler1(data=data).call_run()
+        with transaction.atomic():
+            print("手工回调")
+            data={}
+            for item in request.data:
+                data[item] = request.data[item]
+            ShouGongHandler1(data=data).call_run()
         return None
 
 
