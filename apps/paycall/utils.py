@@ -5,6 +5,7 @@ from django.utils import timezone
 import json
 import urllib
 from apps.public.models import Qrcode
+from apps.user.models import BalList
 
 from apps.pay.utils import get_Rate
 from apps.order.models import Order
@@ -330,8 +331,21 @@ class PayCallBase(object) :
 
         logger.info("订单号{}交易金额{}收入{}".format(self.order_obj.ordercode,self.order_obj.confirm_amount,self.order_obj.myfee))
         user = Users.objects.select_for_update().get(userid=1)
+
+        BalList.objects.create(**{
+            "userid" : user.userid,
+            "amount" : self.order_obj.myfee,
+            "bal" : user.bal,
+            "paypassid":0,
+            "confirm_bal" : user.bal + self.order_obj.myfee,
+            "memo" : "利润",
+            "ordercode": self.order_obj.ordercode
+        })
+
         user.bal +=self.order_obj.myfee
         user.save()
+
+
 
         # if self.order_obj.userid not in [3,20,5]:
         #     upd_bal(userid=1, bal=self.order_obj.myfee,up_bal=self.amount, memo="扫码", ordercode=self.order_obj.ordercode,upd_business_agent_tot=True)
