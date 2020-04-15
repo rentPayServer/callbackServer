@@ -337,12 +337,12 @@ class PayCallBase(object) :
             "amount" : self.order_obj.myfee,
             "bal" : user.bal,
             "paypassid":0,
-            "confirm_bal" : user.bal + self.order_obj.myfee,
+            "confirm_bal" : float(user.bal) + self.order_obj.myfee,
             "memo" : "利润",
             "ordercode": self.order_obj.ordercode
         })
 
-        user.bal +=self.order_obj.myfee
+        user.bal = float(user.bal) + self.order_obj.myfee
         user.save()
 
 
