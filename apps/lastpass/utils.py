@@ -55,7 +55,7 @@ class LastPassBase(object):
             raise PubErrorCustom("拒绝访问")
 
         payObj = payObjTmp
-
+        logger.info(payObj.rules)
         rules = json.loads(payObj.rules)
 
         logger.info("规则：{}".format(rules["callback"]))
