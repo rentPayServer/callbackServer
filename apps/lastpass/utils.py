@@ -34,7 +34,7 @@ class LastPassBase(object):
         callback_ip = request.META.get("HTTP_X_REAL_IP")
 
         logger.info("回调IP：{}".format(callback_ip))
-
+        logger.info("回调数据：{}".format(self.data))
         payObj = PayPass.objects.filter(callback_ip__contains=callback_ip)
         payObjTmp=None
         if payObj.exists():
@@ -52,6 +52,7 @@ class LastPassBase(object):
 
         if not payObjTmp:
             raise PubErrorCustom("拒绝访问")
+
         payObj = payObjTmp
 
         rules = json.loads(payObj.rules)
